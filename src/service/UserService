@@ -1,0 +1,16 @@
+import { UserDto } from '../dto/UserDto';
+import * as httpError from 'http-errors';
+import { UserRepository } from '../repository/UserRepository';
+import User from '../model/User';
+
+export class UserService {
+  static async get(username: String) {
+    const user = await UserRepository.findByUsername(username);
+
+    if (!user) {
+      throw httpError(404, `User not found`);
+    }
+
+    return new UserDto(user.username, user.password);
+  }
+}
